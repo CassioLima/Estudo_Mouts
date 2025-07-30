@@ -1,0 +1,111 @@
+Avaliação: Cassio Côrtes Cabral de Lima
+Contato: 21987349999
+
+
+#Link do repositório
+-https://github.com/CassioLima/Estudo_Mouts
+
+#Descrição  que foi feito na prova
+-Ajustei a porta do docker de todos os sistemas
+-Ajustei as connections dos serviços do docker na aplicação
+-Criei uma aplicação do postgree para rodar um script e realizar um Seed das tabelas para falicitar o desenvolvimento no ambiente de teste com docker
+-Ajustei a ordem que o docker inicializa executa para que projeo da Api suba depois dos outros serviços
+-Ajustei a classe ValidationExceptionMiddleware capturando erros da aplicação (private static Task HandleGeneralExceptionAsync(HttpContext context, Exception exception))
+-Tirei os validations da controller para deixar a controller mais limpa
+-Configurei o serilog para persistir no MongoDB
+-Criei os teste unitários
+-No createSaleCommandHandler foi feita uma postagem para SaleCreatedEvent onde o consumer SaleCreatedConsumer pega o evento e faz a baixa no estoque
+-Po endpoint de getAllProducts foi implementado um cache de 5 minutos para a consulta salva
+
+#Obs
+-Basta rodar o docker que o projeto funciona, os curls que vou enviar já estão com ids que foram definidos no script de Seed
+
+
+
+#Curls
+
+-CreateUser
+curl --location 'https://localhost:62796/api/Users' \
+--header 'accept: text/plain' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "username": "cassio2",
+  "password": "Lara201@",
+  "phone": "21987349999",
+  "email": "lima1624@gmail.com",
+  "status": 1,
+  "role": 1
+}'
+
+-Auth
+curl --location 'https://localhost:62796/api/Auth' \
+--header 'accept: text/plain' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "email": "lima1624@gmail.com",
+  "password": "Lara201@"
+}'
+
+-Get_Sale
+curl --location 'https://localhost:62796/api/Sales/44444444-aaaa-4aaa-aaaa-444444444444' \
+--header 'accept: text/plain' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzMDYxZDU2Ni1lMmZiLTRjNzItOTBkNC0wZTY2M2YwYThiM2EiLCJ1bmlxdWVfbmFtZSI6ImNhc3NpbzIiLCJyb2xlIjoiQ3VzdG9tZXIiLCJuYmYiOjE3NTM4MDg5MjgsImV4cCI6MTc1MzgzNzcyNywiaWF0IjoxNzUzODA4OTI4fQ.w3PRXwD_DQ8lHj_Jk7DuEKMa0FBn22hPttxeLC3tEec'
+-
+
+-Post_Sale
+curl --location 'https://localhost:62796/api/Sales' \
+--header 'accept: text/plain' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzMDYxZDU2Ni1lMmZiLTRjNzItOTBkNC0wZTY2M2YwYThiM2EiLCJ1bmlxdWVfbmFtZSI6ImNhc3NpbzIiLCJyb2xlIjoiQ3VzdG9tZXIiLCJuYmYiOjE3NTM4MDg5MjgsImV4cCI6MTc1MzgzNzcyNywiaWF0IjoxNzUzODA4OTI4fQ.w3PRXwD_DQ8lHj_Jk7DuEKMa0FBn22hPttxeLC3tEec' \
+--data '{
+  "saleNumber": "sn23",
+  "saleDate": "2025-07-28T21:17:01.605Z",
+  "customerId": "e2b5cf7e-7f13-4cf6-a8b7-6a2e823b1007",
+  "branch": "loja x",
+  "paymentMethod": "Credit Card",
+  "items": [
+    {
+      "productId": "93abde52-b29f-47a9-a3e3-7f58c2e70010",
+      "quantity": 10,
+      "discountPercentage": 0
+    }
+  ]
+}'
+
+-Delete_Sale
+curl --location --request DELETE 'https://localhost:62796/api/Sales/0e45f796-fdc1-4353-820e-f448d367a2c2' \
+--header 'accept: text/plain' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzMDYxZDU2Ni1lMmZiLTRjNzItOTBkNC0wZTY2M2YwYThiM2EiLCJ1bmlxdWVfbmFtZSI6ImNhc3NpbzIiLCJyb2xlIjoiQ3VzdG9tZXIiLCJuYmYiOjE3NTM4MDg5MjgsImV4cCI6MTc1MzgzNzcyNywiaWF0IjoxNzUzODA4OTI4fQ.w3PRXwD_DQ8lHj_Jk7DuEKMa0FBn22hPttxeLC3tEec'
+
+
+-GetAllProducts
+curl --location 'https://localhost:62796/api/Products' \
+--header 'accept: text/plain' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJiNjg5Y2ViMy03MTRkLTRkNGItYmM2Yi1jNzY1ODVlNGI0MzgiLCJ1bmlxdWVfbmFtZSI6ImNhc3NpbzIiLCJyb2xlIjoiQ3VzdG9tZXIiLCJuYmYiOjE3NTM4NDY4MTIsImV4cCI6MTc1Mzg3NTYxMiwiaWF0IjoxNzUzODQ2ODEyfQ.ebK5dvtYHkoeyJc2f33938yrzYDHnEL1sfHOY2cOHe0'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
